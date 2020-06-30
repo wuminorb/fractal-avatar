@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SVG.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+</head>
+<body style="background-color: black;">
+<script type="application/javascript">
+    function matrixTransform(x, y, m) {
+        m = m.split("(")[1].split(")")[0];
+        m = JSON.parse("[" + m + "]");
+        const newX = m[0] * x + m[2] * y + m[4];
+        const newY = m[1] * x + m[3] * y + m[5];
+        return [newX, newY];
+    }
+</script>
+<script type="application/javascript">
+    const wh = window.innerHeight;
+    const ww = window.innerWidth;
+    const draw = SVG().addTo('body').size(window.innerWidth, window.innerHeight);
+
+    var start = {x:ww/2, y:wh};
+    var x=start.x;
+    var y=start.y;
+    var l=wh/2;
+
+    const layer = 6;
+    const span = 25;
+    
+    function drawLine(x, y, l, angle, i) {
+        var line = draw.line(x, y, x, y-l)
+            .rotate(angle, x, y)
+            .stroke({ color: '#ffffff', width: 1 });
+
+        if (i === 0)
+            line.stroke({ color: '#000000', width: 1 });
+
+        start = matrixTransform(x, y-l, line.attr("transform"));
+
+        x=start[0];
+        y=start[1];
+        l = l/2;
+
+        if (i > layer)
+            return;
+
+        drawLine(x, y, l, angle+span, i+1);
+        drawLine(x, y, l, angle, i+1);
+        drawLine(x, y, l, angle-span, i+1);
+    }
+
+    drawLine(x,y,l,0,0);
+</script>
+</body>
+</html>
