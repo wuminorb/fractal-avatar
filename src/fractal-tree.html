@@ -17,15 +17,16 @@
 <script type="application/javascript">
     const wh = window.innerHeight;
     const ww = window.innerWidth;
-    const draw = SVG().addTo('body').size(window.innerWidth, window.innerHeight);
+    const draw = SVG().addTo('body').size(600, 600);
 
-    var start = {x:ww/2, y:wh};
+    var start = {x:300, y:736};
     var x=start.x;
     var y=start.y;
-    var l=wh/2;
+    var l=244;
 
     const layer = 6;
-    const span = 25;
+    const span = 30;
+    const reduce = 0.618;
     
     function drawLine(x, y, l, angle, i) {
         var line = draw.line(x, y, x, y-l)
@@ -39,7 +40,7 @@
 
         x=start[0];
         y=start[1];
-        l = l/2;
+        l = l*reduce;
 
         if (i > layer)
             return;
